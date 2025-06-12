@@ -1,10 +1,17 @@
 from excelReader import read_excel
-# from dbtTemplateEditor import read_dbt_template
+from stageObjectCreator import create_stage_objects
+from hubObjectCreator import create_hub_objects
+from templateEditor import create_stage_templates, create_hub_templates
+from sqlFileGenerator import write_stage_files, write_hub_files
 
 def main():
-    print("Running")
-    read_excel()
-    # read_dbt_template()
+    excelDataframe = read_excel()
+    stageObjects = create_stage_objects(excelDataframe)
+    stageTemplates = create_stage_templates(stageObjects)
+    write_stage_files(stageTemplates)
+    hubObjects = create_hub_objects(excelDataframe)
+    hubTemplates = create_hub_templates(hubObjects)
+    write_hub_files(hubTemplates)
 
 if __name__ == "__main__":
     main()

@@ -1,15 +1,19 @@
 class Hub:
-    def __init__(self, src_pk, src_nk, src_ldts=None, src_source=None):
-        self.src_pk = src_pk
+    def __init__(
+            self,
+            src_nk
+        ):
         self.src_nk = src_nk
-        self.src_ldts = src_ldts
-        self.src_source = src_source
 
 class Stage:
-    def __init__(self, meta_rec_src, src_nk):
+    def __init__(
+            self,
+            business_key,
+            meta_rec_src, 
+            meta_job_instance_id=-1,
+            meta_encryptionkey_index=0,
+        ):
+        self.business_key = business_key
         self.meta_rec_src = meta_rec_src
-        self.src_nk = src_nk
-
-    def printSelf(self):
-        print(self.meta_rec_src)
-        print(self.src_nk)
+        self.meta_job_instance_id = meta_job_instance_id
+        self.meta_encryptionkey_index = meta_encryptionkey_index

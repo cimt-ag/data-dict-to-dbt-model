@@ -14,7 +14,7 @@ hashed_columns:
     {{target_table_name}}_HK: -- name unter vorbehalt
         - {{target_field_name_value1}}
         - {{target_field_name_value2}}
-    {{target_field_name}}_HASHDIFF:
+    FIELD_HASHDIFF:
       is_hashdiff: true
       columns:
         - "<>"

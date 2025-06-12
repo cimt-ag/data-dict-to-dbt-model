@@ -3,6 +3,7 @@
 target/
 dbt_packages/
 logs/
+models/
 __pycache__/
 ~$Data_Dictionary.xlsx
 Data_Dictionary.xlsx
