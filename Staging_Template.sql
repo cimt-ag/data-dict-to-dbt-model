@@ -1,11 +1,11 @@
-{{{{ config(materialized='view') }}}}
+{{{{ config(materialized='{materialization}') }}}}
 
 {{%- set yaml_metadata -%}}
 source_model:
     {source_model}: "{source_model}"
 derived_columns:
     META_REC_SRC: "{src_source}"
-    META_LOAD_DTS: "TIMESTAMP()"
+    META_LOAD_DTS: "{load_dts}"
     META_JOB_INSTANCE_ID: "{src_job_instance_id}"
     META_ENCRYPTIONKEY_INDEX: "{src_encryptionkey_index}"
 hashed_columns:
@@ -13,10 +13,7 @@ hashed_columns:
     {src_nk}_HASHDIFF:
         is_hashdiff: true
         columns:
-            - "{}"
-            - "{}"
-            - "{}"
-            - "{}"
+{hashdiff_columns}
 {{%- endset -%}}
 
 {{% set metadata_dict = fromyaml(yaml_metadata) %}}

@@ -1,17 +1,16 @@
-{{{{ config(materialized='view') }}}}
+{{{{ config(materialized='{materialization}') }}}}
 
 {{%- set yaml_metadata -%}}
 source_model: "{source_model}"
 src_pk: "{src_pk}"
 src_hashdiff:
-    source_column: "{src_nk}_HASHDIFF"
+    source_column: "{src_column}"
+    alias: "{alias}"
 src_payload:
-    - "{}"
-    - "{}"
-    - "{}"
-src_eff: "{src_effective_from}"
-src_ldts: "META_LOAD_DTS"
-src_source: "META_REC_SRC"
+{payload_columns}
+src_eff: "{src_eff}"
+src_ldts: "{src_ldts}"
+src_source: "{src_source}"
 
 {{%- endset -%}}
 

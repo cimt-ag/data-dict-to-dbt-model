@@ -1,4 +1,4 @@
-{{{{ config(materialized='incremental') }}}}
+{{{{ config(materialized='{materialization}') }}}}
 
 {{%- set source_model = "{source_model}" -%}}
 {{%- set src_pk = "{src_pk}" -%}}
