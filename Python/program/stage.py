@@ -1,6 +1,6 @@
-class StageObject:
+class Stage:
     stageTemplatePath = "../../Staging_Template.sql"
-    stageModelPath = "../../DBT/models/staging_automateDV/{filename}_stage.sql"
+    stageModelPath = "../../DBT/models/staging/{filename}_stage.sql"
 
     def __init__(self, source_model, src_nk, src_source, src_job_instance_id=-1, src_encryptionkey_index=0):
         self.source_model = source_model

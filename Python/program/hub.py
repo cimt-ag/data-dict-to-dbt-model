@@ -1,6 +1,6 @@
-class HubObject():
+class Hub():
     hubTemplatePath = "../../Hub_Template.sql"
-    hubModelPath = "../../DBT/models/hubs_automateDV/hub_{filename}.sql"
+    hubModelPath = "../../DBT/models/hubs/hub_{filename}.sql"
 
     def __init__(self, source_model, src_pk, src_nk, src_ldts, src_source):
         self.source_model = source_model
