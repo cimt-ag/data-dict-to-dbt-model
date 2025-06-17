@@ -1,4 +1,4 @@
-from templateObjects import Hub
+from HubObject import HubObject
 
 import pandas as pd
 
@@ -7,7 +7,7 @@ def create_hub_objects(excelDataframe):
     hubObjects = []
     for valueDict in valueCollections:
         business_key = valueDict.get("business_key")
-        newHubObject = Hub(business_key)
+        newHubObject = HubObject(business_key)
         hubObjects.append(newHubObject)
     return hubObjects
 

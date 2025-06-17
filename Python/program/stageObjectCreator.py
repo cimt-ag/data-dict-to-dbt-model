@@ -1,4 +1,4 @@
-from templateObjects import Stage
+from StageObject import StageObject
 
 import pandas as pd
 
@@ -8,7 +8,7 @@ def create_stage_objects(excelDataframe):
     for valueDict in valueCollections:
         business_key = valueDict.get("business_key")
         meta_rec_src = valueDict.get("meta_rec_src")
-        newStageObject = Stage(business_key, meta_rec_src)
+        newStageObject = StageObject(business_key, meta_rec_src)
         stageObjects.append(newStageObject)
     return stageObjects
 
