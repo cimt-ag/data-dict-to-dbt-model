@@ -1,7 +1,6 @@
-class Stage:
-    stageTemplatePath = "../../Staging_Template.sql"
-    stageModelPath = "../../DBT/models/staging/{filename}_stage.sql"
+from templateobject import TemplateObject
 
+class Stage(TemplateObject):
     def __init__(
             self,
             source_model,
@@ -21,9 +20,17 @@ class Stage:
         self.load_dts = load_dts
         self.src_job_instance_id = src_job_instance_id
         self.src_encryptionkey_index = src_encryptionkey_index
+    
+    @property
+    def templatePath(self):
+        return "../../Staging_Template.sql"
+    
+    @property
+    def modelPath(self):
+        return "../../DBT/models/staging/{filename}_stage.sql"
 
-    def edit_stage_template(self):
-        with open(self.stageTemplatePath, 'r', encoding = 'utf-8') as file:
+    def edit_template(self):
+        with open(self.templatePath, 'r', encoding = 'utf-8') as file:
             stageTemplate = file.read()
 
         editedTemplate = stageTemplate.format(
@@ -43,6 +50,6 @@ class Stage:
         # Indentation needs to be done more dynamically
         return '\n'.join(([f"\t\t\t- \"{column}\"" for column in self.hashdiff_columns]))
 
-    def write_stage_model(self, editedTemplate):
-        with open (self.stageModelPath.format(filename = self.src_nk.lower()), 'w') as stageModelFile:
+    def write_model(self, editedTemplate):
+        with open (self.modelPath.format(filename = self.src_nk.lower()), 'w') as stageModelFile:
             stageModelFile.write(editedTemplate)

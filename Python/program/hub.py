@@ -1,7 +1,6 @@
-class Hub():
-    hubTemplatePath = "../../Hub_Template.sql"
-    hubModelPath = "../../DBT/models/hubs/hub_{filename}.sql"
+from templateobject import TemplateObject
 
+class Hub(TemplateObject):
     def __init__(
             self,
             source_model,
@@ -17,9 +16,17 @@ class Hub():
         self.materialization = materialization
         self.src_ldts = src_ldts
         self.src_source = src_source
+    
+    @property
+    def templatePath(self):
+        return "../../Hub_Template.sql"
+    
+    @property
+    def modelPath(self):
+        return "../../DBT/models/hubs/hub_{filename}.sql"
 
-    def edit_hub_template(self):
-        with open(self.hubTemplatePath, 'r', encoding = 'utf-8') as file:
+    def edit_template(self):
+        with open(self.templatePath, 'r', encoding = 'utf-8') as file:
             hubTemplate = file.read()
 
         editedTemplate = hubTemplate.format(
@@ -33,6 +40,6 @@ class Hub():
 
         return editedTemplate
 
-    def write_hub_model(self, editedTemplate):
-        with open (self.hubModelPath.format(filename = self.src_nk.lower()), 'w') as hubModelFile:
+    def write_model(self, editedTemplate):
+        with open (self.modelPath.format(filename = self.src_nk.lower()), 'w') as hubModelFile:
             hubModelFile.write(editedTemplate)

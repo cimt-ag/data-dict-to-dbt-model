@@ -1,9 +1,8 @@
 import json
 
-class Link():
-    linkTemplatePath = "../../Link_Template.sql"
-    linkModelPath = "../../DBT/models/links/link_{filename}.sql"
+from templateobject import TemplateObject
 
+class Link(TemplateObject):
     def __init__(
             self,
             source_model,
@@ -19,9 +18,17 @@ class Link():
         self.materialization = materialization
         self.src_ldts = src_ldts
         self.src_source = src_source
+    
+    @property
+    def templatePath(self):
+        return "../../Link_Template.sql"
+    
+    @property
+    def modelPath(self):
+        return "../../DBT/models/links/link_{filename}.sql"
 
-    def edit_link_template(self):
-        with open(self.linkTemplatePath, 'r', encoding = 'utf-8') as file:
+    def edit_template(self):
+        with open(self.templatePath, 'r', encoding = 'utf-8') as file:
             linkTemplate = file.read()
 
         editedTemplate = linkTemplate.format(
@@ -35,6 +42,6 @@ class Link():
 
         return editedTemplate
 
-    def write_link_model(self, editedTemplate):
-        with open (self.linkModelPath.format(filename = self.src_pk.replace("_HK", "").lower()), 'w') as linkModelFile:
+    def write_model(self, editedTemplate):
+        with open (self.modelPath.format(filename = self.src_pk.replace("_HK", "").lower()), 'w') as linkModelFile:
             linkModelFile.write(editedTemplate)

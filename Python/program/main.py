@@ -14,7 +14,7 @@ def main():
             dict.get("src_nk"),
             dict.get("hashdiff_columns")
         )
-        stageObject.write_stage_model(stageObject.edit_stage_template())
+        stageObject.write_model(stageObject.edit_template())
 
         satelliteObject = Satellite(
             dict.get("src_nk"),
@@ -24,20 +24,20 @@ def main():
             dict.get("hashdiff_columns"),
             dict.get("src_eff")
         )
-        satelliteObject.write_sat_model(satelliteObject.edit_sat_template())
+        satelliteObject.write_model(satelliteObject.edit_template())
 
         linkObject = Link(
             dict.get("src_nk").lower() + "_stage",
             dict.get("src_nk") + "_" + "LINKSOURCE2" + "_HK"
         )
-        linkObject.write_link_model(linkObject.edit_link_template())
+        linkObject.write_model(linkObject.edit_template())
 
         hubObject = Hub(
-            dict.get("src_nk").lower().join("_stage"),
+            dict.get("src_nk").lower() + "_stage",
             dict.get("src_nk") + "_HK",
             dict.get("src_nk")
         )
-        hubObject.write_hub_model(hubObject.edit_hub_template())
+        hubObject.write_model(hubObject.edit_template())
 
 if __name__ == "__main__":
     main()

@@ -1,7 +1,6 @@
-class Satellite():
-    satTemplatePath = "../../Satellite_Template.sql"
-    satModelPath = "../../DBT/models/sats/sat_{filename}.sql"
+from templateobject import TemplateObject
 
+class Satellite(TemplateObject):
     def __init__(
             self,
             src_nk,
@@ -25,9 +24,17 @@ class Satellite():
         self.alias = alias
         self.src_ldts = src_ldts
         self.src_source = src_source
+    
+    @property
+    def templatePath(self):
+        return "../../Satellite_Template.sql"
+    
+    @property
+    def modelPath(self):
+        return "../../DBT/models/sats/sat_{filename}.sql"
 
-    def edit_sat_template(self):
-        with open(self.satTemplatePath, 'r', encoding = 'utf-8') as file:
+    def edit_template(self):
+        with open(self.templatePath, 'r', encoding = 'utf-8') as file:
             satTemplate = file.read()
 
         editedTemplate = satTemplate.format(
@@ -45,8 +52,9 @@ class Satellite():
         return editedTemplate
     
     def format_arrays(self):
+        # Indentation needs to be done more dynamically
         return '\n'.join([f"\t- \"{column}\"" for column in self.payload_columns])
 
-    def write_sat_model(self, editedTemplate):
-        with open (self.satModelPath.format(filename = self.src_nk.lower()), 'w') as satModelFile:
+    def write_model(self, editedTemplate):
+        with open (self.modelPath.format(filename = self.src_nk.lower()), 'w') as satModelFile:
             satModelFile.write(editedTemplate)
