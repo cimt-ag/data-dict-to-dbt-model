@@ -5,7 +5,7 @@ source_model:
     {source_model}: "{source_model}"
 derived_columns:
     META_REC_SRC: "{src_source}"
-    META_LOAD_DTS: "{load_dts}"
+    META_LOAD_DTS: "{src_ldts}"
     META_JOB_INSTANCE_ID: "{src_job_instance_id}"
     META_ENCRYPTIONKEY_INDEX: "{src_encryptionkey_index}"
 hashed_columns:

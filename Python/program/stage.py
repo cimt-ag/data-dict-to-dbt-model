@@ -1,55 +1,21 @@
-from templateobject import TemplateObject
+from template_builder import TemplateBuilder
 
-class Stage(TemplateObject):
-    def __init__(
-            self,
-            source_model,
-            src_source,
-            src_nk,
-            hashdiff_columns,
-            materialization="view",
-            load_dts="TIMESTAMP()",
-            src_job_instance_id=-1,
-            src_encryptionkey_index=0
-        ):
-        self.source_model = source_model
-        self.src_source = src_source
-        self.src_nk = src_nk
-        self.hashdiff_columns = hashdiff_columns
-        self.materialization = materialization
-        self.load_dts = load_dts
-        self.src_job_instance_id = src_job_instance_id
-        self.src_encryptionkey_index = src_encryptionkey_index
-    
-    @property
-    def templatePath(self):
-        return "../../Staging_Template.sql"
-    
-    @property
-    def modelPath(self):
-        return "../../DBT/models/staging/{filename}_stage.sql"
 
-    def edit_template(self):
-        with open(self.templatePath, 'r', encoding = 'utf-8') as file:
-            stageTemplate = file.read()
+def create_stage_model(valueDict):
+    templatePath = "../../Staging_Template.sql"
+    modelPath = "../../DBT/models/staging/{filename}_stage.sql"
 
-        editedTemplate = stageTemplate.format(
-            materialization = self.materialization,
-            source_model = self.source_model,
-            src_source = self.src_source,
-            src_nk = self.src_nk,
-            hashdiff_columns = self.format_array(),
-            load_dts = self.load_dts,
-            src_job_instance_id = self.src_job_instance_id,
-            src_encryptionkey_index = self.src_encryptionkey_index
-        )
+    values = {}
+    values["materialization"] = "view"
+    values["source_model"] = valueDict.get("source_model")
+    values["src_source"] = valueDict.get("src_source")
+    values["src_ldts"] = "TIMESTAMP()"
+    values["src_nk"] = valueDict.get("src_nk")
+    values["src_job_instance_id"] = -1
+    values["src_encryptionkey_index"] = 0
+    values["hashdiff_columns"] = valueDict.get("hashdiff_columns")
 
-        return editedTemplate
-
-    def format_array(self):
-        # Indentation needs to be done more dynamically
-        return '\n'.join(([f"\t\t\t- \"{column}\"" for column in self.hashdiff_columns]))
-
-    def write_model(self, editedTemplate):
-        with open (self.modelPath.format(filename = self.src_nk.lower()), 'w') as stageModelFile:
-            stageModelFile.write(editedTemplate)
+    templateObject = TemplateBuilder(templatePath, modelPath, values)
+    template = templateObject.read_template()
+    editedTemplate = templateObject.edit_template(template)
+    templateObject.write_model(editedTemplate, values["src_nk"].lower())
