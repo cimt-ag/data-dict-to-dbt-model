@@ -1,35 +1,42 @@
 import pandas as pd
 
-def read_excel():
-    # Path needs to be set via parameter or something else dynamically
-    excel = pd.read_excel('../../Data_Dictionary.xlsx', sheet_name = 'Dict - only positional files', skiprows=1)
+
+def read_excel(filePath, sheetName):
+    excel = pd.read_excel(filePath, sheetName, skiprows=1)
     filteredExcel = excel[excel['table /\nfile'] == 'ANABCR1P_BCR_DEFAULT']
-    #print(filteredExcel.columns)
     return filteredExcel
 
-def get_fields(excelDataframe):
-    valueDicts = []
-    for _, row in excelDataframe.iterrows():
-        rowValues = {}
+def get_all_values(excelDataframe):
+    valuesForAllRows: list = []
+    for _, currentRow in excelDataframe.iterrows():
+        rowValues: dict = {}
 
-        # Getting the source model (table/file)
-        rowValues["source_model"] = row["field name in the source system"]
+        rowValues["source_model"] = get_source_model(currentRow)
+        rowValues["src_source"] = get_src_source(currentRow)
+        rowValues["src_nk"] = get_business_key(currentRow)
+        rowValues["hashdiff_columns"] = get_hashdiff_columns(currentRow)
+        rowValues["src_eff"] = get_src_eff(currentRow)
 
-        # Getting the source (META_REC_SOURCE)
-        rowValues["src_source"] = row["source\nsystem"] + "." + row["table /\nfile"]
+        valuesForAllRows.append(rowValues)
+    return valuesForAllRows
 
-        # Getting the business key (nk)
-        if pd.isna(row["target field name"]):
-            if pd.isna(row["alternative name / \nidentifier in interface"]):
-                rowValues["src_nk"] = row["field name in the source system"]
-            else:
-                rowValues["src_nk"] = row["alternative name / \nidentifier in interface"]
+def get_source_model(row):
+    return row["field name in the source system"]
+
+def get_src_source(row):
+    return row["source\nsystem"] + "." + row["table /\nfile"]
+
+def get_business_key(row):
+    if pd.isna(row["target field name"]):
+        if pd.isna(row["alternative name / \nidentifier in interface"]):
+            return row["field name in the source system"]
         else:
-            rowValues["src_nk"] = row["target field name"]
+            return row["alternative name / \nidentifier in interface"]
+    else:
+        return row["target field name"]
 
-        rowValues["hashdiff_columns"] = [row["data type\n(CHAR, INT, DEC, DATE, DOUBLE, Timestamp etc.)"], row["format / \nlength\n(0 / 0,00 / yyyy-mm-dd etc.)"], row["nullable?\n( Y / N)"]]
+def get_hashdiff_columns(row):
+    return [row["data type\n(CHAR, INT, DEC, DATE, DOUBLE, Timestamp etc.)"], row["format / \nlength\n(0 / 0,00 / yyyy-mm-dd etc.)"], row["nullable?\n( Y / N)"]]
 
-        rowValues["src_eff"] = row["position\nfrom"]
-
-        valueDicts.append(rowValues)
-    return valueDicts
+def get_src_eff(row):
+    return row["position\nfrom"]

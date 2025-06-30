@@ -1,9 +1,9 @@
 from template_builder import TemplateBuilder
 
 
-def create_stage_model(valueDict):
-    templatePath = "../../Staging_Template.sql"
-    modelPath = "../../DBT/models/staging/{filename}_stage.sql"
+def create_stage_model(templateFolder: str, modelFolder: str, valueDict: dict):
+    templatePath = templateFolder + "/Staging_Template.sql"
+    modelPath = modelFolder + "/staging/{filename}_stage.sql"
 
     values = {}
     values["materialization"] = "view"
@@ -15,7 +15,7 @@ def create_stage_model(valueDict):
     values["src_encryptionkey_index"] = 0
     values["hashdiff_columns"] = valueDict.get("hashdiff_columns")
 
-    templateObject = TemplateBuilder(templatePath, modelPath, values)
-    template = templateObject.read_template()
-    editedTemplate = templateObject.edit_template(template)
-    templateObject.write_model(editedTemplate, values["src_nk"].lower())
+    stageTemplateObject = TemplateBuilder(templatePath, modelPath, values)
+    stageTemplate = stageTemplateObject.read_template()
+    editedTemplate = stageTemplateObject.edit_template(stageTemplate)
+    stageTemplateObject.write_model(editedTemplate, values["src_nk"].lower())
