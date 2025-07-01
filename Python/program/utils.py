@@ -15,3 +15,7 @@ def find_path(targetName: str):
         if currentPath == currentPath.parent:
             break
         currentPath = currentPath.parent
+
+def format_collection(valuesCollection: tuple, indentation: int = 2):
+    rowPrefix: str = "\t" * indentation + "  - "
+    return "\n".join([f"{rowPrefix}{value}" for value in valuesCollection])

@@ -36,7 +36,7 @@ def get_business_key(row):
         return row["target field name"]
 
 def get_hashdiff_columns(row):
-    return [row["data type\n(CHAR, INT, DEC, DATE, DOUBLE, Timestamp etc.)"], row["format / \nlength\n(0 / 0,00 / yyyy-mm-dd etc.)"], row["nullable?\n( Y / N)"]]
+    return (row["data type\n(CHAR, INT, DEC, DATE, DOUBLE, Timestamp etc.)"], row["format / \nlength\n(0 / 0,00 / yyyy-mm-dd etc.)"], row["nullable?\n( Y / N)"])
 
 def get_src_eff(row):
     return row["position\nfrom"]

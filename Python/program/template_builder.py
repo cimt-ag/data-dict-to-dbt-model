@@ -11,6 +11,8 @@ class TemplateBuilder:
     def edit_template(self, template):
         return template.format_map(self.values)
 
-    def write_model(self, editedTemplate, filename):
+    def write_model(self, filename):
+        template = self.read_template()
+        editedTemplate = self.edit_template(template)
         with open (self.modelPath.format(filename = filename), 'w') as modelFile:
             modelFile.write(editedTemplate)
