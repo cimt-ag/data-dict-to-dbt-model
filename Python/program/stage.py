@@ -3,10 +3,10 @@ from utils import format_collection
 
 
 def create_stage_model(templateFolder: str, modelFolder: str, valueDict: dict):
-    templatePath = templateFolder + "/Staging_Template.sql"
-    modelPath = modelFolder + "/staging/{filename}_stage.sql"
+    templatePath: str = templateFolder + "/Staging_Template.sql"
+    modelPath: str = modelFolder + "/staging/{filename}_stage.sql"
 
-    values = {}
+    values: dict = {}
     values["materialization"] = "view"
     values["source_model"] = valueDict.get("source_model")
     values["src_source"] = valueDict.get("src_source")
