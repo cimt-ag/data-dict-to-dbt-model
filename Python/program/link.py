@@ -1,47 +1,18 @@
-import json
+from template_builder import TemplateBuilder
 
-from templateobject import TemplateObject
+def create_link_model(valueDict):
+        templatePath = "../../Link_Template.sql"
+        modelPath = "../../DBT/models/links/link_{filename}.sql"
 
-class Link(TemplateObject):
-    def __init__(
-            self,
-            source_model,
-            src_pk,
-            src_fk=["LINKSOURCE1_HK", "LINKSOURCE2_HK"],
-            materialization="incremental",
-            src_ldts="META_LOAD_DTS",
-            src_source="META_REC_SRC"
-        ):
-        self.source_model = source_model
-        self.src_pk = src_pk
-        self.src_fk = src_fk
-        self.materialization = materialization
-        self.src_ldts = src_ldts
-        self.src_source = src_source
-    
-    @property
-    def templatePath(self):
-        return "../../Link_Template.sql"
-    
-    @property
-    def modelPath(self):
-        return "../../DBT/models/links/link_{filename}.sql"
+        values = {}
+        values["materialization"] = "incremental"
+        values["source_model"] = valueDict.get("src_nk").lower() + "_stage"
+        values["src_source"] = "META_REC_SRC"
+        values["src_ldts"] = "META_LOAD_DTS"
+        values["src_nk"] = valueDict.get("src_nk")
+        values["src_pk"] = valueDict.get("src_nk") + "_HK"
 
-    def edit_template(self):
-        with open(self.templatePath, 'r', encoding = 'utf-8') as file:
-            linkTemplate = file.read()
-
-        editedTemplate = linkTemplate.format(
-            materialization = self.materialization,
-            source_model = self.source_model,
-            src_pk = self.src_pk,
-            src_fk = json.dumps(self.src_fk),
-            src_ldts = self.src_ldts,
-            src_source = self.src_source
-        )
-
-        return editedTemplate
-
-    def write_model(self, editedTemplate):
-        with open (self.modelPath.format(filename = self.src_pk.replace("_HK", "").lower()), 'w') as linkModelFile:
-            linkModelFile.write(editedTemplate)
+        templateObject = TemplateBuilder(templatePath, modelPath, values)
+        template = templateObject.read_template()
+        editedTemplate = templateObject.edit_template(template)
+        templateObject.write_model(editedTemplate, values["src_nk"].lower())
