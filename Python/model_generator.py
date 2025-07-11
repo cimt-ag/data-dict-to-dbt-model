@@ -20,10 +20,6 @@ Dependencies:
     - stage.py: Contains `create_stage_model()` for generating model files.
     - utils.py: Contains `find_path()` for resolving file and directory paths.
 
-Usage:
-    Run the script directly:
-        python model_generator.py
-
 Assumptions:
     - The Excel file must contain a sheet named "Dict - only positional files".
     - The project structure contains identifiable folders/files for templates and model output.
